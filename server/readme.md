@@ -18,6 +18,7 @@
 ### TypeORM 설정
 
 - ghost_story_board DB를 미리 생성한다.
+- .env.example을 참고하여 .env를 작성한다.
 
 1. Run `npm i` command
 2. Setup database settings inside `data-source.ts` file
