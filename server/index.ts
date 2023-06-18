@@ -1,7 +1,10 @@
 import express from "express";
 import type { ErrorRequestHandler } from "express";
+
 import { AppDataSource } from "./src/data-source";
 import { User, Post } from "./src/entity";
+
+import logger from "./src/logger";
 
 // typeorm DB
 AppDataSource.initialize()
@@ -26,6 +29,7 @@ AppDataSource.initialize()
     const port = 8080;
 
     app.get("/", (req, res, next) => {
+      logger.info("서버 정상 작동!");
       res.status(200).json({ message: "server is running...." });
     });
 
@@ -36,8 +40,7 @@ AppDataSource.initialize()
       post.writer = "작성자1";
       try {
         const result = await AppDataSource.manager.save(post);
-        console.log("result", result);
-        res.status(200).json({ message: `${post.id} 글 작성 성공!` });
+        res.status(200).json({ message: `${result.id} 글 작성 성공!` });
       } catch (err) {
         next(err);
       }
