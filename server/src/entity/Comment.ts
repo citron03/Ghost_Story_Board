@@ -4,20 +4,14 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
-  OneToMany,
-  ManyToMany,
-  JoinTable,
+  ManyToOne,
 } from "typeorm";
-import { Comment } from "./Comment";
-import { Tag } from "./Tag";
+import { Post } from "./Post";
 
 @Entity()
-export class Post {
+export class Comment {
   @PrimaryGeneratedColumn()
   id!: number;
-
-  @Column()
-  title!: string;
 
   @Column()
   content!: string;
@@ -28,12 +22,8 @@ export class Post {
   @Column()
   password!: string;
 
-  @OneToMany(() => Comment, (comment) => comment.post)
-  comments!: Comment[];
-
-  @ManyToMany(() => Tag)
-  @JoinTable()
-  tags!: Tag[];
+  @ManyToOne(() => Post, (post) => post.comments)
+  post!: Post;
 
   @CreateDateColumn()
   createdDate!: Date;

@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
-import { User, Post } from "./entity";
+import { User, Post, Tag, Comment } from "./entity";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -13,7 +13,7 @@ export const AppDataSource = new DataSource({
   database: "ghost_story_board",
   synchronize: true,
   logging: false,
-  entities: [User, Post],
+  entities: [User, Post, Tag, Comment],
   migrations: [],
   subscribers: [],
 });
