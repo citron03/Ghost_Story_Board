@@ -23,6 +23,7 @@ boardRouter.post(
       newPost.content = req.body.content;
       newPost.writer = req.body.writer;
       newPost.password = req.body.password;
+      newPost.views = 0;
       if (req.body.tags && req.body.tags.length > 0) {
         let postTags = [];
         for (let tag of req.body.tags) {
