@@ -1,0 +1,58 @@
+import { Router } from "express";
+import type { Request, Response, NextFunction } from "express";
+import { Post, Comment, Tag } from "../entity";
+import { AppDataSource } from "../data-source";
+import logger from "../logger";
+
+const boardRouter = Router();
+
+boardRouter.post(
+  "/post",
+  async (req: Request, res: Response, next: NextFunction) => {
+    console.log(req.body);
+    if (
+      !req.body.title ||
+      !req.body.content ||
+      !req.body.writer ||
+      !req.body.password
+    ) {
+      res.status(400).json({ message: "wrong request. check requset body" });
+    } else {
+      const newPost = new Post();
+      newPost.title = req.body.title;
+      newPost.content = req.body.content;
+      newPost.writer = req.body.writer;
+      newPost.password = req.body.password;
+      if (req.body.tags && req.body.tags.length > 0) {
+        let postTags = [];
+        for (let tag of req.body.tags) {
+          const checkTag = await AppDataSource.getRepository(Tag).findOne({
+            where: {
+              name: tag,
+            },
+          });
+          if (!checkTag) {
+            const newTag = new Tag();
+            newTag.name = tag;
+            const result = await AppDataSource.manager.save(newTag);
+            postTags.push(result);
+          } else {
+            postTags.push(checkTag);
+          }
+        }
+        newPost.tags = postTags;
+      }
+      try {
+        const postResult = await AppDataSource.manager.save(newPost);
+        res
+          .status(200)
+          .json({ message: `${postResult.id} post save SUCCESS!`, postResult });
+        logger.info(postResult);
+      } catch (err) {
+        next(err);
+      }
+    }
+  }
+);
+
+export default boardRouter;

@@ -1,9 +1,15 @@
 import express from "express";
-import type { ErrorRequestHandler } from "express";
+import type {
+  ErrorRequestHandler,
+  Request,
+  Response,
+  NextFunction,
+} from "express";
 
 import testRouter from "./src/router/test";
 import { AppDataSource } from "./src/data-source";
 import logger from "./src/logger";
+import boardRouter from "./src/router/board";
 
 // typeorm DB
 AppDataSource.initialize()
@@ -20,9 +26,11 @@ app.use(express.json()); // use body
 
 const port = 8080;
 
+// Router
 app.use("/test", testRouter);
+app.use("/board", boardRouter);
 
-app.get("/", (req, res, next) => {
+app.get("/", (_req: Request, res: Response, _next: NextFunction) => {
   logger.info("서버 정상 작동!");
   res.status(200).json({ message: "server is running...." });
 });
