@@ -1,0 +1,10 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  max-width: 80vw;
+}
+
+.buttonGroup {
+  margin-left: 8px;
+}
