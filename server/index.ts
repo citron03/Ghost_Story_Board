@@ -5,6 +5,7 @@ import type {
   Response,
   NextFunction,
 } from "express";
+import cors from "cors";
 
 import testRouter from "./src/router/test";
 import { AppDataSource } from "./src/data-source";
@@ -23,6 +24,7 @@ const app = express();
 
 app.use("/static", express.static("static"));
 app.use(express.json()); // use body
+app.use(cors()); // cors 설정
 
 const port = 8080;
 
