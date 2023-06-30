@@ -28,6 +28,9 @@ export class Post {
   @Column()
   password!: string;
 
+  @Column()
+  views!: number;
+
   @OneToMany(() => Comment, (comment) => comment.post)
   comments!: Comment[];
 
