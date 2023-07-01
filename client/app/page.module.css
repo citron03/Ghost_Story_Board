@@ -16,3 +16,10 @@
   padding: 15px 0;
   border: 1px solid white;
 }
+
+.contents {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
