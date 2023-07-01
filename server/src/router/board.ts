@@ -6,6 +6,21 @@ import logger from "../logger";
 
 const boardRouter = Router();
 
+boardRouter.get(
+  "/all",
+  async (_req: Request, res: Response, next: NextFunction) => {
+    try {
+      const allPost = await AppDataSource.getRepository(Post).find();
+      console.log("allPost", allPost);
+      res
+        .status(200)
+        .json({ message: "성공! 모든 게시물을 반환합니다.", data: allPost });
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
 boardRouter.post(
   "/post",
   async (req: Request, res: Response, next: NextFunction) => {
