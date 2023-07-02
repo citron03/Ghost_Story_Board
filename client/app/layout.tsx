@@ -4,6 +4,10 @@ import { Inter } from "next/font/google";
 import { ChakraProvider } from "@chakra-ui/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
+import * as dayjs from "dayjs";
+import "dayjs/locale/ko"; // import locale
+dayjs.locale("ko");
+
 const queryClient = new QueryClient();
 
 const inter = Inter({ subsets: ["latin"] });

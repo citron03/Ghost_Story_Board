@@ -1,8 +1,22 @@
 "use client";
-import { Box } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+  Divider,
+  Heading,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { Spinner } from "@chakra-ui/react";
+import dayjs from "dayjs";
+import styles from "./PostsList.module.css";
 
 import type { Post } from "../types/postType";
 
@@ -33,5 +47,36 @@ export default function PostsList() {
     );
   }
   console.log("data", data);
-  return <Box>POST LIST</Box>;
+  return (
+    <Box className={styles.container}>
+      {data &&
+        data.data.map((el: Post) => (
+          <Card maxW="sm" key={el.id} className={styles.cardContainer}>
+            <CardHeader></CardHeader>
+            <CardBody>
+              <Stack mt="6" spacing="3">
+                <Heading size="md">{el.title}</Heading>
+                <Text color="blue.600" fontSize="2xs">
+                  {el.writer} / {el.views} views
+                </Text>
+                <Text>{el.content}</Text>
+              </Stack>
+            </CardBody>
+            <Divider />
+            <CardFooter>
+              <Text fontSize="3xs" className={styles.dateText}>
+                작성일
+                <br />
+                {dayjs(el.createdDate).toString()}
+              </Text>
+              <Text fontSize="3xs" className={styles.dateText}>
+                수정일
+                <br />
+                {dayjs(el.updatedDate).toString()}
+              </Text>
+            </CardFooter>
+          </Card>
+        ))}
+    </Box>
+  );
 }
