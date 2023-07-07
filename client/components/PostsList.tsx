@@ -19,6 +19,7 @@ import dayjs from "dayjs";
 import styles from "./PostsList.module.css";
 
 import type { Post } from "../types/postType";
+import PostCard from "./PostCard";
 
 interface DataPosts {
   message: string;
@@ -51,31 +52,16 @@ export default function PostsList() {
     <Box className={styles.container}>
       {data &&
         data.data.map((el: Post) => (
-          <Card maxW="sm" key={el.id} className={styles.cardContainer}>
-            <CardHeader></CardHeader>
-            <CardBody>
-              <Stack mt="6" spacing="3">
-                <Heading size="md">{el.title}</Heading>
-                <Text color="blue.600" fontSize="2xs">
-                  {el.writer} / {el.views} views
-                </Text>
-                <Text>{el.content}</Text>
-              </Stack>
-            </CardBody>
-            <Divider />
-            <CardFooter>
-              <Text fontSize="3xs" className={styles.dateText}>
-                작성일
-                <br />
-                {dayjs(el.createdDate).toString()}
-              </Text>
-              <Text fontSize="3xs" className={styles.dateText}>
-                수정일
-                <br />
-                {dayjs(el.updatedDate).toString()}
-              </Text>
-            </CardFooter>
-          </Card>
+          <PostCard
+            key={el.id}
+            id={el.id}
+            writer={el.writer}
+            views={el.views}
+            title={el.title}
+            content={el.title}
+            createdDate={el.createdDate}
+            updatedDate={el.updatedDate}
+          />
         ))}
     </Box>
   );
