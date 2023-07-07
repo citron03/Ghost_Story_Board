@@ -6,7 +6,10 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import * as dayjs from "dayjs";
 import "dayjs/locale/ko"; // import locale
+import Navigation from "@/components/Navigation";
 dayjs.locale("ko");
+
+import styles from "./layout.module.css";
 
 const queryClient = new QueryClient();
 
@@ -26,7 +29,12 @@ export default function RootLayout({
     <html lang="ko">
       <body className={inter.className}>
         <QueryClientProvider client={queryClient}>
-          <ChakraProvider>{children}</ChakraProvider>
+          <ChakraProvider>
+            <main className={styles.main}>
+              <Navigation />
+              {children}
+            </main>
+          </ChakraProvider>
         </QueryClientProvider>
       </body>
     </html>

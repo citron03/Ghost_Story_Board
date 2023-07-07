@@ -1,22 +1,3 @@
-.main {
-  background-color: rgb(229, 229, 229);
-  min-height: 100vh;
-}
-
-.title {
-  text-align: center;
-  font-size: xx-large;
-  padding: 15px 0;
-  border: 1px solid white;
-}
-
-.subTitle {
-  text-align: center;
-  font-size: large;
-  padding: 15px 0;
-  border: 1px solid white;
-}
-
 .contents {
   display: flex;
   flex-direction: column;
