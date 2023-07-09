@@ -10,8 +10,11 @@ boardRouter.get(
   "/all",
   async (_req: Request, res: Response, next: NextFunction) => {
     try {
-      // TODO: tags 내보내기
-      const allPost = await AppDataSource.getRepository(Post).find();
+      const allPost = await AppDataSource.getRepository(Post).find({
+        relations: {
+          tags: true,
+        },
+      });
       console.log("allPost", allPost);
       res
         .status(200)
