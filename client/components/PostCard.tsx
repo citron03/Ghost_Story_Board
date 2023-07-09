@@ -7,11 +7,13 @@ import {
   Divider,
   CardFooter,
   Text,
+  HStack,
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import styles from "./PostCard.module.css";
 
 import type { Post } from "../types/postType";
+import TagCard from "./TagCard";
 
 export default function PostCard({
   id,
@@ -21,13 +23,20 @@ export default function PostCard({
   content,
   createdDate,
   updatedDate,
+  tags,
 }: Partial<Post>) {
   return (
     <Card maxW="sm" key={id} className={styles.cardContainer}>
-      <CardHeader></CardHeader>
+      <CardHeader>
+        <Heading size="md">{title}</Heading>
+      </CardHeader>
       <CardBody>
-        <Stack mt="6" spacing="3">
-          <Heading size="md">{title}</Heading>
+        <HStack spacing={4}>
+          {tags?.map((tag) => (
+            <TagCard key={tag.id} name={tag.name} />
+          ))}
+        </HStack>
+        <Stack mt="3" spacing="3">
           <Text color="blue.600" fontSize="2xs">
             {writer} / {views} views
           </Text>

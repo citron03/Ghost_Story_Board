@@ -7,4 +7,12 @@ export interface Post {
   updatedDate: string;
   views: number;
   writer: string;
+  tags: Tag[];
+}
+
+export interface Tag {
+  id: number;
+  name: string;
+  createdDate: string;
+  updatedDate: string;
 }

@@ -61,6 +61,7 @@ export default function PostsList() {
             content={el.title}
             createdDate={el.createdDate}
             updatedDate={el.updatedDate}
+            tags={el.tags}
           />
         ))}
     </Box>
