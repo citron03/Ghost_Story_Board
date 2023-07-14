@@ -6,3 +6,10 @@
   justify-content: center;
   align-items: center;
 }
+
+/* 모바일 */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+}
