@@ -1,15 +1,16 @@
 "use client";
 import "./globals.css";
+
 import { Inter } from "next/font/google";
 import { ChakraProvider } from "@chakra-ui/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
+import styles from "./layout.module.css";
+import Navigation from "@/components/Navigation";
+
 import * as dayjs from "dayjs";
 import "dayjs/locale/ko"; // import locale
-import Navigation from "@/components/Navigation";
 dayjs.locale("ko");
-
-import styles from "./layout.module.css";
 
 const queryClient = new QueryClient();
 
@@ -28,14 +29,14 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className={inter.className}>
-        <QueryClientProvider client={queryClient}>
+        <main className={styles.main}>
           <ChakraProvider>
-            <main className={styles.main}>
+            <QueryClientProvider client={queryClient}>
               <Navigation />
               {children}
-            </main>
+            </QueryClientProvider>
           </ChakraProvider>
-        </QueryClientProvider>
+        </main>
       </body>
     </html>
   );
