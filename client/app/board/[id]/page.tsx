@@ -1,9 +1,11 @@
 "use client";
 import { useParams } from "next/navigation";
 import { Box, Stack, Text } from "@chakra-ui/react";
+
 import { useGetPostById } from "@/hooks/apis/get";
 import { Post } from "@/types/postType";
 import TagCard from "@/components/TagCard";
+import CommentCard from "@/components/CommentCard";
 
 export default function Page() {
   const { id } = useParams();
@@ -24,6 +26,15 @@ export default function Page() {
           <Text>{postData?.views}</Text>
         </Box>
         <Text>{postData?.content}</Text>
+        <Stack display="flex" alignItems="center" borderTop="1px" width="full">
+          {postData?.comments && postData?.comments?.length > 0 ? (
+            postData.comments.map((comment) => (
+              <CommentCard key={comment.id} comment={comment} />
+            ))
+          ) : (
+            <Text>댓글이 없습니다.</Text>
+          )}
+        </Stack>
       </Stack>
     </>
   );
