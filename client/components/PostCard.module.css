@@ -2,6 +2,11 @@
   margin: 5px;
 }
 
+.cardContainer:hover {
+  background-color: rgb(255, 255, 203);
+  cursor: url(/assets/ghost-simple-cursor.png), auto;
+}
+
 .dateText {
   padding: 0 10px;
 }

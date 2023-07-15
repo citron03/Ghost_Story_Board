@@ -1,6 +1,6 @@
 "use client";
 import { Box } from "@chakra-ui/react";
-import axios from "axios";
+import axios from "@/utils/api";
 import { useQuery } from "@tanstack/react-query";
 import styles from "./PostsList.module.css";
 
@@ -15,8 +15,7 @@ interface DataPosts {
 export default function PostsList() {
   const { data } = useQuery<DataPosts>({
     queryKey: ["all_posts"],
-    queryFn: () =>
-      axios.get("http://127.0.0.1:8080/board/all").then((res) => res.data),
+    queryFn: () => axios.get("/board/all").then((res) => res.data),
     suspense: true,
   });
 
