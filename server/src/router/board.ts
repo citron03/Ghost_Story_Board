@@ -16,6 +16,7 @@ boardRouter.get(
         },
       });
       console.log("allPost", allPost);
+      logger.info("성공! 모든 게시물을 반환합니다.", allPost);
       res
         .status(200)
         .json({ message: "성공! 모든 게시물을 반환합니다.", data: allPost });
@@ -29,6 +30,10 @@ boardRouter.get(
   "/post/:id",
   async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
+    let isComment = false;
+    if (req.query.comment && req.query.comment === "true") {
+      isComment = true;
+    }
     if (!id) {
       throw new Error("No Id !!");
     }
@@ -36,10 +41,12 @@ boardRouter.get(
       const findPost = await AppDataSource.getRepository(Post).find({
         relations: {
           tags: true,
+          comments: isComment,
         },
         where: { id: Number(id) },
       });
       console.log("findPost", findPost);
+      logger.info(`성공! id가 ${id}인 게시물을 반환합니다.`, findPost);
       res.status(200).json({
         message: `성공! id가 ${id}인 게시물을 반환합니다.`,
         data: findPost,
@@ -89,13 +96,55 @@ boardRouter.post(
       }
       try {
         const postResult = await AppDataSource.manager.save(newPost);
+        logger.info("글 작성 성공, ", postResult);
         res
           .status(200)
           .json({ message: `${postResult.id} post save SUCCESS!`, postResult });
-        logger.info(postResult);
       } catch (err) {
         next(err);
       }
+    }
+  }
+);
+
+boardRouter.post(
+  "/comment",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      console.log("req.body", req.body);
+      if (
+        !req.body.postId ||
+        !req.body.content ||
+        !req.body.writer ||
+        !req.body.password
+      ) {
+        res.status(400).json({ message: "wrong request. check requset body" });
+      } else {
+        const findPost = await AppDataSource.getRepository(Post).find({
+          relations: {
+            tags: false,
+            comments: false,
+          },
+          where: { id: Number(req.body.postId) },
+        });
+        if (!findPost) {
+          res.status(400).json({ message: "This post does not exist!" });
+        } else {
+          const newComment = new Comment();
+          newComment.content = req.body.content;
+          newComment.writer = req.body.writer;
+          newComment.password = req.body.password;
+          newComment.post = findPost[0];
+          const commentResult = await AppDataSource.manager.save(newComment);
+          logger.info("댓글 작성 성공, ", commentResult);
+          res.status(200).json({
+            message: `${commentResult.id} comment save SUCCESS!`,
+            commentResult,
+          });
+        }
+      }
+    } catch (err) {
+      next(err);
     }
   }
 );
