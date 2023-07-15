@@ -4,7 +4,6 @@ import { Box, Stack, Text } from "@chakra-ui/react";
 import { useGetPostById } from "@/hooks/apis/get";
 import { Post } from "@/types/postType";
 import TagCard from "@/components/TagCard";
-import Head from "next/head";
 
 export default function Page() {
   const { id } = useParams();
@@ -13,14 +12,6 @@ export default function Page() {
 
   return (
     <>
-      <Head>
-        <title>{postData?.title || "ghost with this post"}</title>{" "}
-        <meta
-          property="og:title"
-          content={postData?.title || "ghost with this post"}
-          key="title"
-        />
-      </Head>
       <Stack alignItems="center" margin="4" backgroundColor="whiteAlpha.300">
         <Text> 게시글 제목 {postData?.title}</Text>
         <Box>
