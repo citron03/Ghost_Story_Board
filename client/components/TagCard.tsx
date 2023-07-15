@@ -2,7 +2,7 @@ import { Tag } from "@chakra-ui/react";
 import type { Tag as TagType } from "@/types/postType";
 import styles from "./TagCard.module.css";
 
-export default function TagCard({ name }: Partial<TagType>) {
+export default function TagCard({ name = "" }: Partial<TagType>) {
   return (
     <Tag
       size="sm"

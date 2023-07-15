@@ -1,24 +1,13 @@
 "use client";
 import { Box } from "@chakra-ui/react";
-import axios from "@/utils/api";
-import { useQuery } from "@tanstack/react-query";
 import styles from "./PostsList.module.css";
 
 import type { Post } from "../types/postType";
 import PostCard from "./PostCard";
-
-interface DataPosts {
-  message: string;
-  data: Post[];
-}
+import { useGetAllPosts } from "@/hooks/apis/get";
 
 export default function PostsList() {
-  const { data } = useQuery<DataPosts>({
-    queryKey: ["all_posts"],
-    queryFn: () => axios.get("/board/all").then((res) => res.data),
-    suspense: true,
-  });
-
+  const { data } = useGetAllPosts();
   return (
     <Box className={styles.container}>
       {data &&
