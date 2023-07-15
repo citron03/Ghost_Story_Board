@@ -25,6 +25,31 @@ boardRouter.get(
   }
 );
 
+boardRouter.get(
+  "/post/:id",
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { id } = req.params;
+    if (!id) {
+      throw new Error("No Id !!");
+    }
+    try {
+      const findPost = await AppDataSource.getRepository(Post).find({
+        relations: {
+          tags: true,
+        },
+        where: { id: Number(id) },
+      });
+      console.log("findPost", findPost);
+      res.status(200).json({
+        message: `성공! id가 ${id}인 게시물을 반환합니다.`,
+        data: findPost,
+      });
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
 boardRouter.post(
   "/post",
   async (req: Request, res: Response, next: NextFunction) => {
