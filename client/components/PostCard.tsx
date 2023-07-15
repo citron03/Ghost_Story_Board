@@ -1,3 +1,4 @@
+import { useRouter } from "next/navigation";
 import {
   Card,
   CardHeader,
@@ -14,6 +15,7 @@ import styles from "./PostCard.module.css";
 
 import type { Post } from "../types/postType";
 import TagCard from "./TagCard";
+import { useCallback } from "react";
 
 export default function PostCard({
   id,
@@ -25,8 +27,17 @@ export default function PostCard({
   updatedDate,
   tags,
 }: Partial<Post>) {
+  const router = useRouter();
+  const handleRoute = useCallback(() => {
+    router.push(`/board/${id}`);
+  }, [id, router]);
   return (
-    <Card maxW="sm" key={id} className={styles.cardContainer}>
+    <Card
+      maxW="sm"
+      key={id}
+      className={styles.cardContainer}
+      onClick={handleRoute}
+    >
       <CardHeader>
         <Heading size="md">{title}</Heading>
       </CardHeader>
