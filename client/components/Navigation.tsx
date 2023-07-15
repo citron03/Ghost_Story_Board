@@ -1,19 +1,36 @@
-import { Breadcrumb, BreadcrumbItem } from "@chakra-ui/react";
+import {
+  Box,
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  Heading,
+} from "@chakra-ui/react";
 import Link from "next/link";
 import styles from "./Navigation.module.css";
 
 export default function Navigation() {
   return (
-    <div>
-      <h1 className={styles.title}>괴담 괴시판 👻</h1>
-      <Breadcrumb>
+    <Box>
+      <Heading className={styles.title}>괴담 괴시판 👻</Heading>
+      <Breadcrumb
+        separator="/"
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        backgroundColor="gray.100"
+        padding="2"
+      >
         <BreadcrumbItem>
-          <Link href="/">Home</Link>
+          <BreadcrumbLink as={Link} href="/">
+            Home
+          </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbItem>
-          <Link href="/post">Write</Link>
+          <BreadcrumbLink as={Link} href="/post">
+            Write
+          </BreadcrumbLink>
         </BreadcrumbItem>
       </Breadcrumb>
-    </div>
+    </Box>
   );
 }
