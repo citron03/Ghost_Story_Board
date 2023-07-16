@@ -1,27 +1,17 @@
 "use client";
-import { useCallback } from "react";
 import { useParams } from "next/navigation";
-import { Box, Button, Stack, Text } from "@chakra-ui/react";
+import { Box, Stack, Text } from "@chakra-ui/react";
 
 import { useGetPostById } from "@/hooks/apis/get";
 import { Post } from "@/types/postType";
 import TagCard from "@/components/TagCard";
 import CommentCard from "@/components/CommentCard";
-import axios from "@/utils/api";
+import CommentForm from "@/components/CommentForm";
 
 export default function Page() {
   const { id } = useParams();
   const { data } = useGetPostById(id);
   const postData: Post | undefined = data?.data[0];
-
-  const submitComment = useCallback(async () => {
-    await axios.post("/board/comment", {
-      postId: id,
-      content: "테스트 댓글 작성맨",
-      writer: "쌥쌥이",
-      password: "비밀이야",
-    });
-  }, []);
 
   return (
     <>
@@ -45,7 +35,7 @@ export default function Page() {
           ) : (
             <Text>댓글이 없습니다.</Text>
           )}
-          <Button onClick={submitComment}>댓글 작성</Button>
+          <CommentForm postId={id} />
         </Stack>
       </Stack>
     </>
