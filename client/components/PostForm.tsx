@@ -29,11 +29,12 @@ type ReducerType =
   | "CHANGE_CONTENT"
   | "CHANGE_WRITER"
   | "CHANGE_PASSWORD"
-  | "CHANGE_TAGS";
+  | "CHANGE_TAGS"
+  | "RESET_POST_FORM";
 
 interface Action {
   type: ReducerType;
-  payload: string | string[];
+  payload?: string | string[];
 }
 
 const initialState: Post = {
@@ -85,6 +86,9 @@ const reducer = (state: Post, action: Action): Post => {
         return state;
       }
     }
+    case "RESET_POST_FORM": {
+      return { ...initialState };
+    }
     default: {
       return state;
     }
@@ -97,6 +101,7 @@ export default function PostForm() {
     try {
       const res = await axios.post("/board/post", state);
       window.alert("게시물이 등록되었습니다!");
+      dispatch({ type: "RESET_POST_FORM" });
       console.log("res", res);
     } catch (error) {
       window.alert("에러 발생!");
