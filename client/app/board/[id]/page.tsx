@@ -27,7 +27,13 @@ export default function Page() {
           <Text>{postData?.views}</Text>
         </Box>
         <Text>{postData?.content}</Text>
-        <Stack display="flex" alignItems="center" borderTop="1px" width="full">
+        <Stack
+          display="flex"
+          alignItems="center"
+          borderTop="1px"
+          width="full"
+          backgroundColor="yellow.50"
+        >
           {postData?.comments && postData?.comments?.length > 0 ? (
             postData.comments.map((comment) => (
               <CommentCard key={comment.id} comment={comment} />
