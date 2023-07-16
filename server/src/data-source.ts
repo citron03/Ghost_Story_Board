@@ -12,7 +12,7 @@ export const AppDataSource = new DataSource({
   password: process.env.DB_PASSWORD,
   database: "ghost_story_board",
   synchronize: true,
-  logging: false,
+  logging: true,
   entities: [User, Post, Tag, Comment],
   migrations: [],
   subscribers: [],
