@@ -1,7 +1,15 @@
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Button, Text } from "@chakra-ui/react";
 import { Comment } from "@/types/postType";
 
-export default function CommentCard({ comment }: { comment: Comment }) {
+interface IcommentCard {
+  comment: Comment;
+  onDeleteCommentModal: (id: string, title: string) => void;
+}
+
+export default function CommentCard({
+  comment,
+  onDeleteCommentModal,
+}: IcommentCard) {
   return (
     <Box
       border="1px"
@@ -14,6 +22,14 @@ export default function CommentCard({ comment }: { comment: Comment }) {
     >
       <Text fontSize="xs">작성자: {comment.writer}</Text>
       <Text>{comment.content}</Text>
+      <Box>
+        <Button
+          onClick={() => onDeleteCommentModal(comment.id, "댓글")}
+          size="xs"
+        >
+          삭제
+        </Button>
+      </Box>
     </Box>
   );
 }
