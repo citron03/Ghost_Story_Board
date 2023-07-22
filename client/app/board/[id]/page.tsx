@@ -10,6 +10,7 @@ import TagCard from "@/components/TagCard";
 import CommentCard from "@/components/CommentCard";
 import CommentForm from "@/components/CommentForm";
 import DeleteModal from "@/components/DeleteModal";
+import { AxiosError } from "axios";
 
 export default function Page() {
   const { id } = useParams();
@@ -29,11 +30,29 @@ export default function Page() {
     },
     [onOpen]
   );
-  const confirmDeleteModal = useCallback(() => {
+  const confirmDeleteModal = useCallback(async () => {
     console.log(
-      `delete comment\npostId: ${postData?.id}, commentId: ${deleteComment.id} password: ${deleteCommentPassword}`
+      `delete comment\ncommentId: ${deleteComment.id} password: ${deleteCommentPassword}`
     );
-  }, [deleteComment.id, deleteCommentPassword, postData?.id]);
+    if (!deleteComment.id || !deleteCommentPassword) {
+      return alert("잘못된 입력입니다!");
+    }
+    try {
+      const deleteCommentResult = await axios.delete(
+        `/board/comment/${deleteComment.id}/${deleteCommentPassword}`
+      );
+      if (deleteCommentResult) {
+        onClose();
+        return alert("삭제 성공");
+      }
+    } catch (err) {
+      const axiosError = err as AxiosError;
+      if (axiosError.response?.status === 400) {
+        window.alert("잘못된 비밀번호입니다!");
+      }
+      console.error(axiosError);
+    }
+  }, [deleteComment.id, deleteCommentPassword, onClose]);
 
   return (
     <>

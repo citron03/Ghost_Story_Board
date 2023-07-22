@@ -149,4 +149,43 @@ boardRouter.post(
   }
 );
 
+boardRouter.delete(
+  "/comment/:commentId/:password",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      if (!req.params.commentId || !req.params.password) {
+        res.status(404).json({ message: "Not Enough Comment Delete Data" });
+      } else {
+        const commentRepo = AppDataSource.getRepository(Comment);
+        const findComment = await commentRepo.findOne({
+          where: {
+            id: Number(req.params.commentId),
+          },
+        });
+        if (!findComment) {
+          res.status(404).json({ message: "This comment does not exist!" });
+        } else if (findComment.password !== req.params.password) {
+          // 삭제 비밀번호 불일치
+          res.status(400).json({ message: "worng comment password" });
+        } else {
+          const commentDeleteResult = await commentRepo.remove(findComment);
+          if (commentDeleteResult) {
+            logger.info("댓글 삭제 성공, ", commentDeleteResult);
+            res.status(200).json({
+              message: `${commentDeleteResult.id} comment delete SUCCESS!`,
+              commentDeleteResult,
+            });
+          } else {
+            res.status(404).json({
+              message: `${findComment.id} comment delete fail`,
+            });
+          }
+        }
+      }
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
 export default boardRouter;
