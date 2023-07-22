@@ -31,7 +31,8 @@ export class Post {
   @Column()
   views!: number;
 
-  @OneToMany(() => Comment, (comment) => comment.post)
+  // cascade: true 설정 시 Post 삭제 시 자동으로 Comments들 삭제
+  @OneToMany(() => Comment, (comment) => comment.post, { cascade: true })
   comments!: Comment[];
 
   @ManyToMany(() => Tag)

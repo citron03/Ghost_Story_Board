@@ -1,6 +1,6 @@
 "use client";
 import { useCallback, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { Box, Button, Stack, Text, useDisclosure } from "@chakra-ui/react";
 
 import axios from "@/utils/api";
@@ -19,10 +19,11 @@ export default function Page() {
   const postData: Post | undefined = data?.data[0];
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [deleteData, setDeleteData] = useState<{
-    id: string;
+    id: string; // commentId
     title: DeleteTitle;
   }>({ id: "", title: "" });
   const [deletePassword, setDeletePassword] = useState("");
+  const router = useRouter();
 
   const onDeleteModal = useCallback(
     (id: string, title: DeleteTitle) => {
@@ -38,12 +39,16 @@ export default function Page() {
     }
     try {
       const typeOfDelete = deleteData.title === "댓글" ? "comment" : "post";
-      const deleteCommentResult = await axios.delete(
+      const deleteResult = await axios.delete(
         `/board/${typeOfDelete}/${deleteData.id}/${deletePassword}`
       );
-      if (deleteCommentResult) {
+      if (deleteResult) {
         onClose();
-        return alert("삭제 성공");
+        if (deleteData.title === "게시물") {
+          router.push("/");
+        } else {
+          return alert("댓글 삭제 성공");
+        }
       }
     } catch (err) {
       const axiosError = err as AxiosError;
@@ -54,7 +59,7 @@ export default function Page() {
     } finally {
       setDeletePassword("");
     }
-  }, [deleteData.id, deleteData.title, deletePassword, onClose]);
+  }, [deleteData.id, deleteData.title, deletePassword, onClose, router]);
 
   return (
     <>
@@ -75,7 +80,7 @@ export default function Page() {
               if (!postData?.id) {
                 return alert("잘못된 요청입니다.");
               }
-              onDeleteModal(String(postData?.id), "게시물");
+              onDeleteModal(id, "게시물"); // postId
             }}
           >
             게시물 삭제

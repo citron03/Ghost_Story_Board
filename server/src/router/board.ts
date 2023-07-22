@@ -188,4 +188,54 @@ boardRouter.delete(
   }
 );
 
+boardRouter.delete(
+  "/post/:postId/:password",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      if (!req.params.postId || !req.params.password) {
+        res.status(404).json({ message: "Not Enough Post Delete Data" });
+      } else {
+        const postRepo = AppDataSource.getRepository(Post);
+        const findPost = await postRepo.findOne({
+          where: { id: Number(req.params.postId) },
+          relations: {
+            comments: true,
+          },
+        });
+        if (!findPost) {
+          res.status(404).json({ message: "This post does not exist!" });
+        } else if (findPost.password !== req.params.password) {
+          // 삭제 비밀번호 불일치
+          res.status(400).json({ message: "worng post password" });
+        } else {
+          // 댓글 삭제
+          const commentRepo = AppDataSource.getRepository(Comment);
+          const commentDeleteResult = await commentRepo.remove(
+            findPost.comments
+          );
+          if (!commentDeleteResult) {
+            return new Error("댓글 삭제 실패!");
+          }
+          logger.info("댓글 삭제 성공, ", commentDeleteResult);
+          // 게시물 삭제
+          const postRemoveResult = await postRepo.remove(findPost);
+          if (postRemoveResult) {
+            logger.info("게시물 삭제 성공, ", postRemoveResult);
+            res.status(200).json({
+              message: `${postRemoveResult.id} post delete SUCCESS!`,
+              postRemoveResult,
+            });
+          } else {
+            res.status(404).json({
+              message: `${findPost.id} post delete fail`,
+            });
+          }
+        }
+      }
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
 export default boardRouter;
