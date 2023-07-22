@@ -1,9 +1,10 @@
 import { Box, Button, Text } from "@chakra-ui/react";
 import { Comment } from "@/types/postType";
+import { DeleteTitle } from "@/types";
 
 interface IcommentCard {
   comment: Comment;
-  onDeleteCommentModal: (id: string, title: string) => void;
+  onDeleteCommentModal: (id: string, title: DeleteTitle) => void;
 }
 
 export default function CommentCard({

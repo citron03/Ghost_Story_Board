@@ -1,45 +1,45 @@
 "use client";
 import { useCallback, useState } from "react";
 import { useParams } from "next/navigation";
-import { Box, Stack, Text, useDisclosure } from "@chakra-ui/react";
+import { Box, Button, Stack, Text, useDisclosure } from "@chakra-ui/react";
 
 import axios from "@/utils/api";
+import { AxiosError } from "axios";
 import { useGetPostById } from "@/hooks/apis/get";
+import { DeleteTitle } from "@/types";
 import { Post } from "@/types/postType";
 import TagCard from "@/components/TagCard";
 import CommentCard from "@/components/CommentCard";
 import CommentForm from "@/components/CommentForm";
 import DeleteModal from "@/components/DeleteModal";
-import { AxiosError } from "axios";
 
 export default function Page() {
   const { id } = useParams();
   const { data } = useGetPostById(id);
   const postData: Post | undefined = data?.data[0];
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [deleteComment, setDeleteComment] = useState<{
+  const [deleteData, setDeleteData] = useState<{
     id: string;
-    title: string;
+    title: DeleteTitle;
   }>({ id: "", title: "" });
-  const [deleteCommentPassword, setDeleteCommentPassword] = useState("");
+  const [deletePassword, setDeletePassword] = useState("");
 
-  const onDeleteCommentModal = useCallback(
-    (id: string, title: string) => {
-      setDeleteComment({ id, title });
+  const onDeleteModal = useCallback(
+    (id: string, title: DeleteTitle) => {
+      setDeleteData({ id, title });
       onOpen();
     },
     [onOpen]
   );
-  const confirmDeleteModal = useCallback(async () => {
-    console.log(
-      `delete comment\ncommentId: ${deleteComment.id} password: ${deleteCommentPassword}`
-    );
-    if (!deleteComment.id || !deleteCommentPassword) {
+
+  const onDelete = useCallback(async () => {
+    if (!deleteData.id || !deletePassword) {
       return alert("잘못된 입력입니다!");
     }
     try {
+      const typeOfDelete = deleteData.title === "댓글" ? "comment" : "post";
       const deleteCommentResult = await axios.delete(
-        `/board/comment/${deleteComment.id}/${deleteCommentPassword}`
+        `/board/${typeOfDelete}/${deleteData.id}/${deletePassword}`
       );
       if (deleteCommentResult) {
         onClose();
@@ -51,21 +51,40 @@ export default function Page() {
         window.alert("잘못된 비밀번호입니다!");
       }
       console.error(axiosError);
+    } finally {
+      setDeletePassword("");
     }
-  }, [deleteComment.id, deleteCommentPassword, onClose]);
+  }, [deleteData.id, deleteData.title, deletePassword, onClose]);
 
   return (
     <>
       <Stack alignItems="center" margin="4" backgroundColor="whiteAlpha.300">
         <Text> 게시글 제목 {postData?.title}</Text>
+        <Box
+          width="container.md"
+          display="flex"
+          flexDirection="row"
+          justifyContent="space-around"
+        >
+          <Text>조회수 {postData?.views}</Text>
+          <Text>작성자 {postData?.writer}</Text>
+          <Button
+            size="xs"
+            backgroundColor="teal.200"
+            onClick={() => {
+              if (!postData?.id) {
+                return alert("잘못된 요청입니다.");
+              }
+              onDeleteModal(String(postData?.id), "게시물");
+            }}
+          >
+            게시물 삭제
+          </Button>
+        </Box>
         <Box>
           {postData?.tags.map((tag) => (
             <TagCard key={tag.id} name={tag.name} />
           ))}
-        </Box>
-        <Box>
-          <Text>{postData?.writer}</Text>
-          <Text>{postData?.views}</Text>
         </Box>
         <Text>{postData?.content}</Text>
         <Stack
@@ -80,7 +99,7 @@ export default function Page() {
               <CommentCard
                 key={comment.id}
                 comment={comment}
-                onDeleteCommentModal={onDeleteCommentModal}
+                onDeleteCommentModal={onDeleteModal}
               />
             ))
           ) : (
@@ -92,10 +111,10 @@ export default function Page() {
           <DeleteModal
             isOpen={isOpen}
             onClose={onClose}
-            callback={confirmDeleteModal}
-            title={deleteComment?.title}
-            password={deleteCommentPassword}
-            setPassword={setDeleteCommentPassword}
+            callback={onDelete}
+            title={deleteData?.title}
+            password={deletePassword}
+            setPassword={setDeletePassword}
           />
         )}
       </Stack>
