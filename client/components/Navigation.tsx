@@ -7,11 +7,21 @@ import {
 } from "@chakra-ui/react";
 import Link from "next/link";
 import styles from "./Navigation.module.css";
+import GhostLottie from "./LottieGhost";
 
 export default function Navigation() {
   return (
     <Box>
-      <Heading className={styles.title}>괴담 괴시판 👻</Heading>
+      <Box
+        display="flex"
+        flexDirection="row"
+        justifyContent="center"
+        alignItems="center"
+        backgroundColor="#ffffff"
+      >
+        <Heading className={styles.title}>괴담 괴시판</Heading>
+        <GhostLottie />
+      </Box>
       <Breadcrumb
         separator="/"
         display="flex"
