@@ -38,19 +38,26 @@ boardRouter.get(
       throw new Error("No Id !!");
     }
     try {
-      const findPost = await AppDataSource.getRepository(Post).find({
+      const postRepo = AppDataSource.getRepository(Post);
+      const findPost = await postRepo.find({
         relations: {
           tags: true,
           comments: isComment,
         },
         where: { id: Number(id) },
       });
-      console.log("findPost", findPost);
-      logger.info(`성공! id가 ${id}인 게시물을 반환합니다.`, findPost);
-      res.status(200).json({
-        message: `성공! id가 ${id}인 게시물을 반환합니다.`,
-        data: findPost,
-      });
+      if (findPost) {
+        // 조회수 증가
+        findPost[0].views += 1;
+        const responsePost = await postRepo.save(findPost);
+        logger.info(`성공! id가 ${id}인 게시물을 반환합니다.`, responsePost);
+        res.status(200).json({
+          message: `성공! id가 ${id}인 게시물을 반환합니다.`,
+          data: responsePost,
+        });
+      } else {
+        throw new Error("해당 게시물이 존재하지 않습니다.");
+      }
     } catch (err) {
       next(err);
     }

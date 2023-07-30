@@ -28,7 +28,7 @@ export class Post {
   @Column()
   password!: string;
 
-  @Column()
+  @Column({ default: 0 })
   views!: number;
 
   // cascade: true 설정 시 Post 삭제 시 자동으로 Comments들 삭제
