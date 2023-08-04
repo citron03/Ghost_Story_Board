@@ -10,8 +10,12 @@
 
 1. pagination
 2. 회원가입 및 로그인
-3. 삭제 기능 구현
+3. 수정 기능 구현
 
 #### 사용된 이미지들의 출처는 모두 pixabay입니다.
 
 #### lottie의 출처는 lottiefiles입니다.
+
+#### 참고문서
+
+- express with typeorm: https://typeorm.io/example-with-express
