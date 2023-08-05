@@ -1,6 +1,7 @@
-import { Box, Button, Text } from "@chakra-ui/react";
+import { Box, Button, Text, useDisclosure } from "@chakra-ui/react";
 import { Comment } from "@/types/postType";
 import { DeleteTitle } from "@/types";
+import CommentUpdateModal from "./CommentUpdateModal";
 
 interface IcommentCard {
   comment: Comment;
@@ -11,6 +12,7 @@ export default function CommentCard({
   comment,
   onDeleteCommentModal,
 }: IcommentCard) {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <Box
       border="1px"
@@ -23,14 +25,26 @@ export default function CommentCard({
     >
       <Text fontSize="xs">작성자: {comment.writer}</Text>
       <Text>{comment.content}</Text>
-      <Box>
+      <Box margin="1.5">
         <Button
           onClick={() => onDeleteCommentModal(comment.id, "댓글")}
           size="xs"
+          marginRight="0.5"
+          backgroundColor="red.200"
         >
           삭제
         </Button>
+        <Button onClick={onOpen} size="xs" backgroundColor="yellow.200">
+          수정
+        </Button>
       </Box>
+      {isOpen && (
+        <CommentUpdateModal
+          isOpen={isOpen}
+          onClose={onClose}
+          commentData={comment}
+        />
+      )}
     </Box>
   );
 }
