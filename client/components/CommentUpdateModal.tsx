@@ -14,7 +14,6 @@ import {
   Textarea,
 } from "@chakra-ui/react";
 import { Comment } from "@/types/postType";
-import axios from "@/utils/api";
 import { usePutComment } from "@/hooks/apis/comment";
 
 export default function CommentUpdateModal({

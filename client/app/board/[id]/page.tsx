@@ -12,12 +12,14 @@ import TagCard from "@/components/TagCard";
 import CommentCard from "@/components/CommentCard";
 import CommentForm from "@/components/CommentForm";
 import DeleteModal from "@/components/DeleteModal";
+import PostUpdateModal from "@/components/PostUpdateModal";
 
 export default function Page() {
   const { id } = useParams();
   const { data } = useGetPostById(id);
   const postData: Post | undefined = data?.data[0];
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const postModalState = useDisclosure();
+  const commentModalState = useDisclosure();
   const [deleteData, setDeleteData] = useState<{
     id: string; // commentId
     title: DeleteTitle;
@@ -28,9 +30,9 @@ export default function Page() {
   const onDeleteModal = useCallback(
     (id: string, title: DeleteTitle) => {
       setDeleteData({ id, title });
-      onOpen();
+      commentModalState.onOpen();
     },
-    [onOpen]
+    [commentModalState]
   );
 
   const onDelete = useCallback(async () => {
@@ -43,7 +45,7 @@ export default function Page() {
         `/board/${typeOfDelete}/${deleteData.id}/${deletePassword}`
       );
       if (deleteResult) {
-        onClose();
+        commentModalState.onClose();
         if (deleteData.title === "게시물") {
           router.push("/");
         } else {
@@ -59,7 +61,13 @@ export default function Page() {
     } finally {
       setDeletePassword("");
     }
-  }, [deleteData.id, deleteData.title, deletePassword, onClose, router]);
+  }, [
+    commentModalState,
+    deleteData.id,
+    deleteData.title,
+    deletePassword,
+    router,
+  ]);
 
   return (
     <>
@@ -73,25 +81,42 @@ export default function Page() {
         >
           <Text>조회수 {postData?.views}</Text>
           <Text>작성자 {postData?.writer}</Text>
-          <Button
-            size="xs"
-            backgroundColor="teal.200"
-            onClick={() => {
-              if (!postData?.id) {
-                return alert("잘못된 요청입니다.");
-              }
-              onDeleteModal(id, "게시물"); // postId
-            }}
-          >
-            게시물 삭제
-          </Button>
+          <Box>
+            <Button
+              size="xs"
+              backgroundColor="red.200"
+              onClick={() => {
+                if (!postData?.id) {
+                  return alert("잘못된 요청입니다.");
+                }
+                onDeleteModal(id, "게시물"); // postId
+              }}
+            >
+              게시물 삭제
+            </Button>
+            <Button
+              size="xs"
+              backgroundColor="teal.200"
+              marginLeft="0.5"
+              onClick={() => {
+                if (!postData?.id) {
+                  return alert("잘못된 요청입니다.");
+                }
+                postModalState.onOpen();
+              }}
+            >
+              게시물 수정
+            </Button>
+          </Box>
         </Box>
         <Box>
           {postData?.tags.map((tag) => (
             <TagCard key={tag.id} name={tag.name} />
           ))}
         </Box>
-        <Text>{postData?.content}</Text>
+        <Text>
+          <pre>{postData?.content}</pre>
+        </Text>
         <Stack
           display="flex"
           alignItems="center"
@@ -112,10 +137,17 @@ export default function Page() {
           )}
           <CommentForm postId={id} />
         </Stack>
-        {isOpen && (
+        {postData && postModalState.isOpen && (
+          <PostUpdateModal
+            isOpen={postModalState.isOpen}
+            onClose={postModalState.onClose}
+            postData={postData}
+          />
+        )}
+        {commentModalState.isOpen && (
           <DeleteModal
-            isOpen={isOpen}
-            onClose={onClose}
+            isOpen={commentModalState.isOpen}
+            onClose={commentModalState.onClose}
             callback={onDelete}
             title={deleteData?.title}
             password={deletePassword}

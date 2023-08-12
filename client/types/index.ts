@@ -4,3 +4,5 @@ export type Date = {
 };
 
 export type DeleteTitle = "댓글" | "게시물" | "";
+
+export type InputTypes = HTMLInputElement | HTMLTextAreaElement;
