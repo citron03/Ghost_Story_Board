@@ -238,6 +238,47 @@ boardRouter.delete(
   }
 );
 
+boardRouter.put(
+  "/post/:postId/:password",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      if (!req.params.postId || !req.params.password) {
+        res.status(404).json({ message: "Not Enough Post Update Data" });
+      } else {
+        const postRepo = AppDataSource.getRepository(Post);
+        const findPost = await postRepo.findOne({
+          where: { id: Number(req.params.postId) },
+          relations: {
+            comments: true,
+          },
+        });
+        if (!findPost) {
+          res.status(404).json({ message: "This post does not exist!" });
+        } else if (findPost.password !== req.params.password) {
+          // 수정 비밀번호 불일치
+          res.status(400).json({ message: "worng post password" });
+        } else {
+          // 게시물 수정
+          postRepo.merge(findPost, req.body);
+          const postUpdateResult = await postRepo.save(findPost);
+          if (postUpdateResult) {
+            logger.info("게시물 수정 성공, ", postUpdateResult);
+            res.status(200).json({
+              message: `${postUpdateResult.id} post update SUCCESS!`,
+              postUpdateResult,
+            });
+          } else {
+            res.status(404).json({
+              message: `${findPost.id} post update fail`,
+            });
+          }
+        }
+      }
+    } catch (err) {
+      next(err);
+    }
+  }
+);
 boardRouter.delete(
   "/post/:postId/:password",
   async (req: Request, res: Response, next: NextFunction) => {
