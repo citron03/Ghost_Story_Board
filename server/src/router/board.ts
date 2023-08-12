@@ -168,6 +168,9 @@ boardRouter.put(
           where: {
             id: Number(req.params.commentId),
           },
+          relations: {
+            post: true, // Post 데이터 포함
+          },
         });
         if (!findComment) {
           res.status(404).json({ message: "This comment does not exist!" });

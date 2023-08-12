@@ -5,7 +5,7 @@ import { Box, Button, Stack, Text, useDisclosure } from "@chakra-ui/react";
 
 import axios from "@/utils/api";
 import { AxiosError } from "axios";
-import { useGetPostById } from "@/hooks/apis/get";
+import { useGetPostById } from "@/hooks/apis/post";
 import { DeleteTitle } from "@/types";
 import { Post } from "@/types/postType";
 import TagCard from "@/components/TagCard";

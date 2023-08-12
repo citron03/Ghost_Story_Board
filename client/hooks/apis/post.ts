@@ -18,10 +18,11 @@ export const useGetAllPosts = () => {
 
 export const useGetPostById = (id: string, comment: boolean = true) => {
   const { data } = useQuery<DataPosts>({
-    queryKey: [`${id}_post`],
+    queryKey: ["post", id],
     queryFn: () =>
       axios.get(`/board/post/${id}?comment=${comment}`).then((res) => res.data),
     suspense: true,
+    // staleTime: 60 * 60 * 24,
   });
   return { data };
 };

@@ -4,7 +4,7 @@ import styles from "./PostsList.module.css";
 
 import type { Post } from "../types/postType";
 import PostCard from "./PostCard";
-import { useGetAllPosts } from "@/hooks/apis/get";
+import { useGetAllPosts } from "@/hooks/apis/post";
 
 export default function PostsList() {
   const { data } = useGetAllPosts();

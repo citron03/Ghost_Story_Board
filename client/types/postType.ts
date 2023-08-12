@@ -23,3 +23,11 @@ export interface Comment extends Date {
   writer: string;
   password: string;
 }
+
+export interface CommentWithPost extends Date {
+  id: string;
+  content: string;
+  writer: string;
+  password: string;
+  post: Post;
+}

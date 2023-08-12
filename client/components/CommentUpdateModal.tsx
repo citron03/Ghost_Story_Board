@@ -15,6 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { Comment } from "@/types/postType";
 import axios from "@/utils/api";
+import { usePutComment } from "@/hooks/apis/comment";
 
 export default function CommentUpdateModal({
   isOpen,
@@ -27,6 +28,8 @@ export default function CommentUpdateModal({
 }) {
   const [commentContent, setCommentContent] = useState(commentData.content);
   const [checkPassword, setCheckPassword] = useState("");
+  const mutation = usePutComment(onClose);
+
   const onChangeComment = useCallback((e: ChangeEvent<HTMLTextAreaElement>) => {
     setCommentContent(e.target.value);
   }, []);
@@ -38,19 +41,8 @@ export default function CommentUpdateModal({
     const body: Partial<Comment> = {
       content: commentContent,
     };
-    try {
-      const result = await axios.put(
-        `/board/comment/${commentData.id}/${checkPassword}`,
-        body
-      );
-      console.log("result", result);
-      if (result.status === 200) {
-        onClose();
-      }
-    } catch (err) {
-      alert("에러 발생!\n댓글을 수정하지 못했습니다.");
-    }
-  }, [checkPassword, commentContent, commentData.id, onClose]);
+    mutation.mutate({ commentDataId: commentData.id, checkPassword, body });
+  }, [checkPassword, commentContent, commentData.id, mutation]);
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose}>
