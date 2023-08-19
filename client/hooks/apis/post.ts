@@ -57,7 +57,10 @@ export const usePutPost = (onClose: () => void) => {
         postUpdateResult: Post;
       };
       onClose();
-      queryClient.invalidateQueries(["post", result.postUpdateResult.id]);
+      return queryClient.invalidateQueries([
+        "post",
+        result.postUpdateResult.id,
+      ]);
     },
     onError() {
       alert("에러 발생!\n게시글을 수정하지 못했습니다.");
