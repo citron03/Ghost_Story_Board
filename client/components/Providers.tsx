@@ -1,15 +1,26 @@
-import { Metadata } from "next";
+import { useState } from "react";
 import { ChakraProvider } from "@chakra-ui/react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {
+  Hydrate,
+  QueryClient,
+  QueryClientProvider,
+  dehydrate,
+} from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
-const queryClient = new QueryClient();
-
 export default function Layout({ children }: { children: React.ReactNode }) {
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: { queries: { suspense: true } },
+      })
+  );
+  const dehydratedState = dehydrate(queryClient);
+
   return (
     <ChakraProvider>
       <QueryClientProvider client={queryClient}>
-        {children}
+        <Hydrate state={dehydratedState}>{children}</Hydrate>
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </ChakraProvider>

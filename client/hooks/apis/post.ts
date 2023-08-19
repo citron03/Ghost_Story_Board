@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "@/utils/api";
 import { Post } from "@/types/postType";
+import useSafeMount from "../useSafeMount";
 
 interface DataPosts {
   message: string;
@@ -17,12 +18,13 @@ export const useGetAllPosts = () => {
 };
 
 export const useGetPostById = (id: string, comment: boolean = true) => {
+  const hasMounted = useSafeMount(); // 새로고침 시 무한 fetch 방지 (무한 렌더링)
   const { data } = useQuery<DataPosts>({
     queryKey: ["post", id],
     queryFn: () =>
       axios.get(`/board/post/${id}?comment=${comment}`).then((res) => res.data),
     suspense: true,
-    // staleTime: 60 * 60 * 24,
+    enabled: hasMounted,
   });
   return { data };
 };

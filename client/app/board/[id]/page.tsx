@@ -16,8 +16,11 @@ import PostUpdateModal from "@/components/PostUpdateModal";
 
 export default function Page() {
   const { id } = useParams();
+
+  // fetch post data
   const { data } = useGetPostById(id);
   const postData: Post | undefined = data?.data[0];
+
   const postModalState = useDisclosure();
   const commentModalState = useDisclosure();
   const [deleteData, setDeleteData] = useState<{
@@ -114,9 +117,9 @@ export default function Page() {
             <TagCard key={tag.id} name={tag.name} />
           ))}
         </Box>
-        <Text>
-          <pre>{postData?.content}</pre>
-        </Text>
+        <pre>
+          <Text>{postData?.content}</Text>
+        </pre>
         <Stack
           display="flex"
           alignItems="center"
