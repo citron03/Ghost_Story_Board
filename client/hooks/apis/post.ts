@@ -25,6 +25,7 @@ export const useGetPostById = (id: string, comment: boolean = true) => {
       axios.get(`/board/post/${id}?comment=${comment}`).then((res) => res.data),
     suspense: true,
     enabled: hasMounted,
+    staleTime: 60 * 60 * 24,
   });
   return { data };
 };
