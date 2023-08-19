@@ -13,6 +13,7 @@ import CommentCard from "@/components/CommentCard";
 import CommentForm from "@/components/CommentForm";
 import DeleteModal from "@/components/DeleteModal";
 import PostUpdateModal from "@/components/PostUpdateModal";
+import Loading from "@/components/Loading";
 
 export default function Page() {
   const { id } = useParams();
@@ -117,9 +118,13 @@ export default function Page() {
             <TagCard key={tag.id} name={tag.name} />
           ))}
         </Box>
-        <pre>
-          <Text>{postData?.content}</Text>
-        </pre>
+        {postData?.content && postData?.content?.length > 0 ? (
+          <pre>
+            <Text>{postData?.content}</Text>
+          </pre>
+        ) : (
+          <Loading />
+        )}
         <Stack
           display="flex"
           alignItems="center"
