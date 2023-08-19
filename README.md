@@ -21,3 +21,5 @@
 - express with typeorm: https://typeorm.io/example-with-express
 
 - react query SSR setting: https://tanstack.com/query/v4/docs/react/guides/ssr#using-the-app-directory-in-nextjs-13
+
+- favicon: https://www.favicon-generator.org/
