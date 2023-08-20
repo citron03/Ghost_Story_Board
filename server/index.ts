@@ -11,6 +11,7 @@ import testRouter from "./src/router/test";
 import { AppDataSource } from "./src/data-source";
 import logger from "./src/logger";
 import boardRouter from "./src/router/board";
+import utilsRouter from "./src/router/utils";
 
 // typeorm DB
 AppDataSource.initialize()
@@ -31,6 +32,7 @@ const port = 8080;
 // Router
 app.use("/test", testRouter);
 app.use("/board", boardRouter);
+app.use("/utils", utilsRouter);
 
 app.get("/", (_req: Request, res: Response, _next: NextFunction) => {
   logger.info("서버 정상 작동!");

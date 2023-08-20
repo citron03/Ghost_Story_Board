@@ -40,6 +40,11 @@ export default function Navigation() {
             Write
           </BreadcrumbLink>
         </BreadcrumbItem>
+        <BreadcrumbItem>
+          <BreadcrumbLink as={Link} href="/settings">
+            Settings
+          </BreadcrumbLink>
+        </BreadcrumbItem>
       </Breadcrumb>
     </Box>
   );
