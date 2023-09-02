@@ -16,4 +16,5 @@ export const AppDataSource = new DataSource({
   entities: [User, Post, Tag, Comment],
   migrations: [],
   subscribers: [],
+  charset: "utf8mb4",
 });
