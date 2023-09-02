@@ -23,3 +23,8 @@
 - react query SSR setting: https://tanstack.com/query/v4/docs/react/guides/ssr#using-the-app-directory-in-nextjs-13
 
 - favicon: https://www.favicon-generator.org/
+
+#### 배포 서버 정보
+
+- 배포 서버 node version 16.20.2
+- pm2, nginx
