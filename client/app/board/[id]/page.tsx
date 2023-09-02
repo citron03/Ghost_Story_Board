@@ -78,14 +78,14 @@ export default function Page() {
       <Stack alignItems="center" margin="4" backgroundColor="whiteAlpha.300">
         <Text> 게시글 제목 {postData?.title}</Text>
         <Box
-          width="container.md"
+          width="full"
           display="flex"
           flexDirection="row"
           justifyContent="space-around"
         >
           <Text>조회수 {postData?.views}</Text>
           <Text>작성자 {postData?.writer}</Text>
-          <Box>
+          <Box display="flex" flexWrap="wrap">
             <Button
               size="xs"
               backgroundColor="red.200"
