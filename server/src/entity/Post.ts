@@ -16,16 +16,16 @@ export class Post {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Column()
+  @Column({ charset: "utf8mb4", collation: "utf8mb4_unicode_ci" })
   title!: string;
 
-  @Column()
+  @Column({ charset: "utf8mb4", collation: "utf8mb4_unicode_ci" })
   content!: string;
 
-  @Column()
+  @Column({ charset: "utf8mb4", collation: "utf8mb4_unicode_ci" })
   writer!: string;
 
-  @Column()
+  @Column({ charset: "utf8mb4", collation: "utf8mb4_unicode_ci" })
   password!: string;
 
   @Column({ default: 0 })
