@@ -25,7 +25,11 @@ const app = express();
 
 app.use("/static", express.static("static"));
 app.use(express.json()); // use body
-app.use(cors()); // cors 설정
+app.use(
+  cors({
+    origin: ["https://ghost-story-board.vercel.app/"],
+  })
+); // cors 설정
 
 const port = 8080;
 
