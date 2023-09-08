@@ -27,7 +27,7 @@ app.use("/static", express.static("static"));
 app.use(express.json()); // use body
 app.use(
   cors({
-    origin: ["https://ghost-story-board.vercel.app/"],
+    origin: ["https://ghost-story-board.vercel.app"],
   })
 ); // cors 설정
 
