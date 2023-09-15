@@ -21,10 +21,12 @@ export default function PostUpdateModal({
   isOpen,
   onClose,
   postData,
+  refetch,
 }: {
   isOpen: boolean;
   onClose: () => void;
   postData: Post;
+  refetch: () => void;
 }) {
   const [postTitle, onChangePostTitle] = useInput<string, HTMLInputElement>(
     postData.title
@@ -37,7 +39,7 @@ export default function PostUpdateModal({
     string,
     HTMLInputElement
   >("");
-  const mutation = usePutPost(onClose);
+  const mutation = usePutPost(onClose, refetch);
 
   const onUpdatePost = useCallback(async () => {
     const body: Partial<Post> = {

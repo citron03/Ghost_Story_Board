@@ -20,14 +20,16 @@ export default function CommentUpdateModal({
   isOpen,
   onClose,
   commentData,
+  refetch,
 }: {
   isOpen: boolean;
   onClose: () => void;
   commentData: Comment;
+  refetch: () => void;
 }) {
   const [commentContent, setCommentContent] = useState(commentData.content);
   const [checkPassword, setCheckPassword] = useState("");
-  const mutation = usePutComment(onClose);
+  const mutation = usePutComment(onClose, refetch);
 
   const onChangeComment = useCallback((e: ChangeEvent<HTMLTextAreaElement>) => {
     setCommentContent(e.target.value);

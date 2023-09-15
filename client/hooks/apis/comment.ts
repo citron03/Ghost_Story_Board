@@ -22,7 +22,7 @@ const putComment = async ({
   }
 };
 
-export const usePutComment = (onClose: () => void) => {
+export const usePutComment = (onClose: () => void, refetch: () => void) => {
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: putComment,
@@ -32,6 +32,7 @@ export const usePutComment = (onClose: () => void) => {
         commentUpdateResult: CommentWithPost;
       };
       onClose();
+      refetch();
       queryClient.invalidateQueries([
         "post",
         result.commentUpdateResult.post.id,
