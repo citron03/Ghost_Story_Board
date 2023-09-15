@@ -19,7 +19,7 @@ export default function Page() {
   const { id } = useParams();
 
   // fetch post data
-  const { data } = useGetPostById(id);
+  const { data, refetch } = useGetPostById(id);
   const postData: Post | undefined = data?.data[0];
 
   const postModalState = useDisclosure();
@@ -53,6 +53,7 @@ export default function Page() {
         if (deleteData.title === "게시물") {
           router.push("/");
         } else {
+          refetch();
           return alert("댓글 삭제 성공");
         }
       }
@@ -70,6 +71,7 @@ export default function Page() {
     deleteData.id,
     deleteData.title,
     deletePassword,
+    refetch,
     router,
   ]);
 
@@ -138,18 +140,20 @@ export default function Page() {
                 key={comment.id}
                 comment={comment}
                 onDeleteCommentModal={onDeleteModal}
+                refetch={refetch}
               />
             ))
           ) : (
             <Text>댓글이 없습니다.</Text>
           )}
-          <CommentForm postId={id} />
+          <CommentForm postId={id} refetch={refetch} />
         </Stack>
         {postData && postModalState.isOpen && (
           <PostUpdateModal
             isOpen={postModalState.isOpen}
             onClose={postModalState.onClose}
             postData={postData}
+            refetch={refetch}
           />
         )}
         {commentModalState.isOpen && (

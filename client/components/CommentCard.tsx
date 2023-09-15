@@ -6,11 +6,13 @@ import CommentUpdateModal from "./CommentUpdateModal";
 interface IcommentCard {
   comment: Comment;
   onDeleteCommentModal: (id: string, title: DeleteTitle) => void;
+  refetch: () => void;
 }
 
 export default function CommentCard({
   comment,
   onDeleteCommentModal,
+  refetch,
 }: IcommentCard) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
@@ -43,6 +45,7 @@ export default function CommentCard({
           isOpen={isOpen}
           onClose={onClose}
           commentData={comment}
+          refetch={refetch}
         />
       )}
     </Box>

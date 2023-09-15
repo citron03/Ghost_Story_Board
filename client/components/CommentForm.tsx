@@ -64,7 +64,13 @@ const reducer = (state: ReducerState, action: ReducerAction): ReducerState => {
   }
 };
 
-export default function CommentForm({ postId }: { postId: string }) {
+export default function CommentForm({
+  postId,
+  refetch,
+}: {
+  postId: string;
+  refetch: () => void;
+}) {
   const [state, dispatch] = useReducer(reducer, initialState);
   const isContentInvalid = state.content.length <= 0;
   const isWriterInvalid = state.writer.length <= 0;
@@ -82,13 +88,14 @@ export default function CommentForm({ postId }: { postId: string }) {
       if (result) {
         alert("댓글 작성 성공!");
         dispatch({ type: "RESET_COMMENT_FORM" });
+        refetch();
       } else {
         throw new Error("서버로부터 응답 없음");
       }
     } catch (err) {
       alert("댓글 작성 실패!");
     }
-  }, [postId, state.content, state.password, state.writer]);
+  }, [postId, refetch, state.content, state.password, state.writer]);
   return (
     <Box margin="2.5">
       <FormControl>

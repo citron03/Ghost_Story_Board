@@ -19,7 +19,7 @@ export const useGetAllPosts = () => {
 
 export const useGetPostById = (id: string, comment: boolean = true) => {
   const hasMounted = useSafeMount(); // 새로고침 시 무한 fetch 방지 (무한 렌더링)
-  const { data } = useQuery<DataPosts>({
+  const { data, refetch } = useQuery<DataPosts>({
     queryKey: ["post", id],
     queryFn: () =>
       axios.get(`/board/post/${id}?comment=${comment}`).then((res) => res.data),
@@ -27,7 +27,7 @@ export const useGetPostById = (id: string, comment: boolean = true) => {
     enabled: hasMounted,
     staleTime: 60 * 60 * 24,
   });
-  return { data };
+  return { data, refetch };
 };
 
 const putPost = async ({
@@ -50,7 +50,7 @@ const putPost = async ({
   }
 };
 
-export const usePutPost = (onClose: () => void) => {
+export const usePutPost = (onClose: () => void, refetch: () => void) => {
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: putPost,
@@ -60,6 +60,7 @@ export const usePutPost = (onClose: () => void) => {
         postUpdateResult: Post;
       };
       onClose();
+      refetch();
       return queryClient.invalidateQueries([
         "post",
         result.postUpdateResult.id,
