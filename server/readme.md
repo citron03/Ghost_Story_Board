@@ -1,10 +1,12 @@
 # Server App
 
+- 배포된 서버의 도메인 ghost-rabbit.shop
+
 ### TODO
 
-- TypeORM 설정
-- DB 스키마 설계
-- nginx 설정
+- TypeORM 설정 X
+- DB 스키마 설계 X
+- nginx 설정 X
 
 #### TypeORM을 사용한 이유
 
