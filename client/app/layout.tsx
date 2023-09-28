@@ -34,6 +34,20 @@ export default function RootLayout({
           name="description"
           content="유쾌하고 으스스한 괴담을 나누는 장소입니다"
         />
+        <meta property="og:type" content="website" />
+        <meta
+          property="og:description"
+          content="괴담을 공유하고 괴담을 읽을 수 있는 플랫폼"
+        />
+        <meta
+          property="og:url"
+          content="https://ghost-story-board.vercel.app/"
+        />
+        <meta property="og:locale" content="ko_KR" />
+        <meta
+          property="og:url"
+          content="https://ghost-story-board.vercel.app/assets/ghosts-cute.png" // TODO: 권장 크기: 1200 x 630
+        />
       </head>
       <body className={inter.className}>
         <main className={styles.main}>
