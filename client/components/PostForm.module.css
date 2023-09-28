@@ -3,7 +3,8 @@
   flex-direction: column;
   margin: 0 auto;
   width: 100%;
-  max-width: 80vw;
+  max-width: 20vw;
+  min-width: 13vw;
 }
 
 .buttonGroup {
